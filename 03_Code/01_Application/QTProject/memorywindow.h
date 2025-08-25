@@ -8,7 +8,8 @@
 #include "AppConfig.h"
 
 // Specific define for CPU display
-#define MEM_SLOW_TIMER_INTERVAL_MS          1000
+#define MEM_FAST_TIMER_INTERVAL_MS          5000
+#define MEM_SLOW_TIMER_INTERVAL_MS          5000
 
 namespace Ui {
 class MemoryWindow;
@@ -25,6 +26,7 @@ public:
 private slots:
     void on_btnMemBack_clicked();
     void onTimerExceedSlow();
+    void onTimerExceedFast();
 
 private:
     Ui::MemoryWindow *ui;
