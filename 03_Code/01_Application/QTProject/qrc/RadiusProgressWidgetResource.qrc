@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/RadiusProgress">
+        <file>img/lb_back.png</file>
+        <file>img/lb_front.png</file>
+    </qresource>
+</RCC>

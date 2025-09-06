@@ -1,8 +1,8 @@
 <RCC>
     <qresource prefix="/Background">
-        <file>Background.png</file>
+        <file>img/Background.png</file>
     </qresource>
     <qresource prefix="/TimeBackgound">
-        <file>TimeWallPaper.jpg</file>
+        <file>img/TimeWallPaper.jpg</file>
     </qresource>
 </RCC>

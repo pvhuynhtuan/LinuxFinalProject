@@ -22,7 +22,7 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>320</width>
+      <width>322</width>
       <height>240</height>
      </rect>
     </property>
@@ -102,9 +102,9 @@
           <string/>
          </property>
          <property name="icon">
-          <iconset resource="button.qrc">
-           <normaloff>:/backbutton/backbutton.png</normaloff>
-           <normalon>:/backbutton/backbutton.png</normalon>:/backbutton/backbutton.png</iconset>
+          <iconset resource="../qrc/button.qrc">
+           <normaloff>:/backbutton/img/backbutton.png</normaloff>
+           <normalon>:/backbutton/img/backbutton.png</normalon>:/backbutton/img/backbutton.png</iconset>
          </property>
          <property name="iconSize">
           <size>
@@ -366,7 +366,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="button.qrc"/>
+  <include location="../qrc/button.qrc"/>
  </resources>
  <connections/>
 </ui>

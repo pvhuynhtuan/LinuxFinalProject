@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/images">
-        <file>temper.png</file>
+        <file>img/temper.png</file>
     </qresource>
 </RCC>

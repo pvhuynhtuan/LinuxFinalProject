@@ -36,7 +36,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="BackGround.qrc">:/Background/Background.png</pixmap>
+     <pixmap resource="../qrc/BackGround.qrc">:/Background/img/Background.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -313,7 +313,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="temper.qrc">:/images/temper.png</pixmap>
+          <pixmap resource="../qrc/temper.qrc">:/images/img/temper.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -755,8 +755,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="BackGround.qrc"/>
-  <include location="temper.qrc"/>
+  <include location="../qrc/temper.qrc"/>
+  <include location="../qrc/BackGround.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -48,7 +48,7 @@ font: italic 10pt &quot;Brush Script MT&quot;;</string>
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap resource="BackGround.qrc">:/TimeBackgound/TimeWallPaper.jpg</pixmap>
+     <pixmap resource="../qrc/BackGround.qrc">:/TimeBackgound/img/TimeWallPaper.jpg</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -317,7 +317,7 @@ background-color: rgba(255, 255, 255, 0);</string>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="BackGround.qrc"/>
+  <include location="../qrc/BackGround.qrc"/>
  </resources>
  <connections/>
 </ui>
