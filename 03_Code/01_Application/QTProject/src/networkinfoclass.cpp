@@ -1,5 +1,16 @@
 #include "networkinfoclass.h"
 
+NetworkInfoClass::NetworkInfoClass()
+{
+    myIP = QString();
+    uploadSpeed = 0.0;
+    downloadSpeed = 0.0;
+    period = 1.0;
+    rxBytesData = 0.0;
+    txBytesData = 0.0;
+    this->ifInfoPath = NETWORK_DATA_PATH;
+}
+
 NetworkInfoClass::NetworkInfoClass(QString ifInfoPath)
 {
     myIP = QString();

@@ -30,7 +30,8 @@ SOURCES += \
     $${SRC_DIR}/radiusprogresswidget.cpp \
     $${SRC_DIR}/raminfoclass.cpp \
     $${SRC_DIR}/timewindow.cpp \
-    $${SRC_DIR}/waveprogresswidget.cpp
+    $${SRC_DIR}/waveprogresswidget.cpp \
+    $${SRC_DIR}/appdataprocessing.cpp
 
 HEADERS += \
     $${INC_DIR}/AppConfig.h \
@@ -46,7 +47,8 @@ HEADERS += \
     $${INC_DIR}/radiusprogresswidget.h \
     $${INC_DIR}/raminfoclass.h \
     $${INC_DIR}/timewindow.h \
-    $${INC_DIR}/waveprogresswidget.h
+    $${INC_DIR}/waveprogresswidget.h \
+    $${INC_DIR}/appdataprocessing.h
 
 FORMS += \
     $${FORM_DIR}/cpuwindow.ui \

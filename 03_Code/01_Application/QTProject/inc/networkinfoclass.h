@@ -21,6 +21,7 @@
 class NetworkInfoClass
 {
 public:
+    NetworkInfoClass();
     NetworkInfoClass(QString ifInfoPath);
 
     QString getMyIP();

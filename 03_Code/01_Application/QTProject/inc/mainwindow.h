@@ -12,12 +12,11 @@
 #include "raminfoclass.h"
 #include "clickablelabelclass.h"
 #include "networkinfoclass.h"
+#include "appdataprocessing.h"
 
 #include "AppConfig.h"
 
 // Specific define for CPU display
-#define MAIN_FAST_TIMER_INTERVAL_MS         100
-#define MAIN_MEDIAN_TIMER_INTERVAL_MS       500
 #define MAIN_SLOW_TIMER_INTERVAL_MS         1000
 
 QT_BEGIN_NAMESPACE
@@ -31,27 +30,26 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(AppDataProcessing* lpProcessor, QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
     void onTimeLabelClicked();
     void onCPUMeterClicked();
     void onRAMMeterClicked();
-    void onTimerExceedFast();
-    void onTimerExceedMedian();
     void onTimerExceedSlow();
+    void onTotalCpuUsageDataUpdate(double ldTotalCpuUsage, double ldTotalCpuLoad);
+    void onTotalCpuTemperDataUpdate(double ldTotalCpuTemper);
+    void onRamDataUpdate(double ldRamUsage, double ldRamTotal, double ldRamAvailable, double ldSwapTotal, double ldSwapFree);
+    void onNetworkDataUpdate(QString lsMyIP, double ldUploadSpeed, double ldDownloadSpeed);
 
 private:
+    AppDataProcessing* gpProcessor;
     cpuwindow *cpuScreen;
     MemoryWindow *memoryScreen;
     TimeWindow *timeScreen;
     Ui::MainWindow *ui;
     RingMeter *pCpuMeter;
     RingMeter *pRamMeter;
-    CpuInfoClass *glTotalCpuInfo;
-    RamInfoClass *gpRamInfo;
-
-    NetworkInfoClass *gpNetworkInfo;
 };
 #endif // MAINWINDOW_H
