@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QTime>   // for QTime
 
+#include "appdataprocessing.h"
 #include "cpuinfoclass.h"
 #include "AppConfig.h"
 
@@ -25,13 +26,14 @@ class cpuwindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit cpuwindow(QWidget *parent = nullptr);
+    explicit cpuwindow(AppDataProcessing* lpProcessor, QWidget *parent = nullptr);
     ~cpuwindow();
 
 private slots:
     void on_btnBackButton_clicked();
-    void onTimerExceedGraph();
-    void onTimerExceedInfo();
+    void onTotalCpuUsageDataUpdate(double ldTotalCpuUsage, double ldTotalCpuLoad);
+    void onTotalCpuTemperDataUpdate(double ldTotalCpuTemper);
+    void onSubCpusUsageDataUpdate(QList<double> ldCpusUsage);
 
 private:
     Ui::cpuwindow *ui;
@@ -39,8 +41,6 @@ private:
     QList<QLineSeries *> glCpuSeries;
     QValueAxis *gpAxisX;
     QValueAxis *gpAxisY;
-    QList<CpuInfoClass *> glCpusInfo;
-    CpuInfoClass *glTotalCpuInfo;
 };
 
 #endif // CPUWINDOW_H

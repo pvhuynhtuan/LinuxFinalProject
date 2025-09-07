@@ -27,6 +27,6 @@ int main(int argc, char *argv[])
     // Free the memory
     lpWorkerThread->quit();
     lpWorkerThread->wait();
-    delete lpProcessor;
+    lpProcessor->deleteLater();
     return ret;
 }

@@ -58,7 +58,7 @@ void MainWindow::onTimeLabelClicked()
 void MainWindow::onCPUMeterClicked()
 {
     if (!cpuScreen) {
-        cpuScreen = new cpuwindow(this);  // or nullptr for independent window
+        cpuScreen = new cpuwindow(gpProcessor, this);  // or nullptr for independent window
     }
     cpuScreen->show();
     cpuScreen->raise();
