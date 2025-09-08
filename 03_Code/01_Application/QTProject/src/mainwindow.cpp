@@ -48,7 +48,7 @@ MainWindow::~MainWindow()
 void MainWindow::onTimeLabelClicked()
 {
     if (!timeScreen) {
-        timeScreen = new TimeWindow(this);  // or nullptr for independent window
+        timeScreen = new TimeWindow(gpProcessor, this);  // or nullptr for independent window
     }
     timeScreen->show();
     timeScreen->raise();

@@ -3,9 +3,7 @@
 
 #include <QMainWindow>
 
-#include "cpuinfoclass.h"
-#include "raminfoclass.h"
-#include "networkinfoclass.h"
+#include "appdataprocessing.h"
 #include "AppConfig.h"
 
 // Specific define for CPU display
@@ -22,19 +20,17 @@ class TimeWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit TimeWindow(QWidget *parent = nullptr);
+    explicit TimeWindow(AppDataProcessing* lpProcessor, QWidget *parent = nullptr);
     ~TimeWindow();
 
 private slots:
     void on_pushButton_clicked();
-    void onTimerExceedFast();
-    void onTimerExceedMedian();
     void onTimerExceedSlow();
+    void onTotalCpuUsageDataUpdate(double ldTotalCpuUsage, double ldTotalCpuLoad);
+    void onRamDataUpdate(double ldRamUsage, double ldRamTotal, double ldRamAvailable, double ldSwapTotal, double ldSwapFree);
+    void onNetworkDataUpdate(QString lsMyIP, double ldUploadSpeed, double ldDownloadSpeed);
 
 private:
-    CpuInfoClass *glCpuInfo;
-    RamInfoClass *gpRamInfo;
-    NetworkInfoClass *gpNetworkInfo;
     Ui::TimeWindow *ui;
 };
 

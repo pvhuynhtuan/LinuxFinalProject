@@ -4,37 +4,19 @@
 #include <QTime>
 #include <QDate>
 
-TimeWindow::TimeWindow(QWidget *parent)
+TimeWindow::TimeWindow(AppDataProcessing* lpProcessor, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::TimeWindow)
 {
     ui->setupUi(this);
 
-
-    glCpuInfo = new CpuInfoClass("cpu ", CPU_USAGE_PATH, CPU_LOAD_PATH, CPU_TEMPER_PATH);
-    #ifdef Q_OS_LINUX
-    glCpuInfo->CalculateCpuUsage(); // dummy read to start initial data
-    #endif
-
-    gpRamInfo = new RamInfoClass();
-    #ifdef Q_OS_LINUX
-    gpRamInfo->CalculateRamUsage(); // dummy read to start initial data
-    #endif
-
-    gpNetworkInfo = new NetworkInfoClass(NETWORK_DATA_PATH);
-    gpNetworkInfo->setPeriod((double)TIME_MEDIAN_TIMER_INTERVAL_MS / 1000.0);
-
-    QTimer *lpTimerFast = new QTimer(this);
-    connect(lpTimerFast, &QTimer::timeout, this, &TimeWindow::onTimerExceedFast);
-    lpTimerFast->start(TIME_FAST_TIMER_INTERVAL_MS);
-
-    QTimer *lpTimerMedian = new QTimer(this);
-    connect(lpTimerMedian, &QTimer::timeout, this, &TimeWindow::onTimerExceedMedian);
-    lpTimerMedian->start(TIME_MEDIAN_TIMER_INTERVAL_MS);
-
     QTimer *lpTimerSlow = new QTimer(this);
     connect(lpTimerSlow, &QTimer::timeout, this, &TimeWindow::onTimerExceedSlow);
     lpTimerSlow->start(TIME_SLOW_TIMER_INTERVAL_MS);
+
+    connect(lpProcessor, &AppDataProcessing::onTotalCpuUsageDataReady, this, &TimeWindow::onTotalCpuUsageDataUpdate);
+    connect(lpProcessor, &AppDataProcessing::onRamDataReady, this, &TimeWindow::onRamDataUpdate);
+    connect(lpProcessor, &AppDataProcessing::onNetworkDataReady, this, &TimeWindow::onNetworkDataUpdate);
 }
 
 TimeWindow::~TimeWindow()
@@ -45,77 +27,6 @@ TimeWindow::~TimeWindow()
 void TimeWindow::on_pushButton_clicked()
 {
     this->hide();
-}
-
-void TimeWindow::onTimerExceedFast()
-{
-    double ldCpuUsage;
-    double ldRamUsage;
-
-    // Display the CPU usage
-    #ifdef Q_OS_LINUX
-    ldCpuUsage = glCpuInfo->CalculateCpuUsage();
-    if (ldCpuUsage >= 0)
-    {
-        ui->pbCPU->setValue((int)ldCpuUsage);
-    }
-    else
-    {
-        // Do nothing
-    }
-    #elif defined(Q_OS_WIN)
-    ldCpuUsage = rand() % 100; // Fake data for now => to test on the window
-    ui->pbCPU->setValue((int)ldCpuUsage);
-    #endif
-
-    // Display the RAM usage
-    #ifdef Q_OS_LINUX
-    ldRamUsage = gpRamInfo->CalculateRamUsage();
-    if (ldRamUsage >= 0)
-    {
-        ui->pbRAM->setValue((int)ldRamUsage);
-    }
-    else
-    {
-        // Do nothing
-    }
-    #elif defined(Q_OS_WIN)
-    ldRamUsage = rand() % 100; // Fake data for now => to test on the window
-    ui->pbRAM->setValue((int)ldRamUsage);
-    #endif
-}
-
-void TimeWindow::onTimerExceedMedian()
-{
-    // Display the network data
-    #ifdef Q_OS_LINUX
-    int liReturnValue = gpNetworkInfo->getCurrentNetworkInfo();
-    if (0 <= liReturnValue)
-    {
-        if (gpNetworkInfo->getUploadSpeed() < 1024.0)
-        {
-            ui->lbUpSpeed->setText(QString("%1 KB/s").arg(gpNetworkInfo->getUploadSpeed(), 0, 'f', 2));
-        }
-        else
-        {
-            ui->lbUpSpeed->setText(QString("%1 MB/s").arg(gpNetworkInfo->getUploadSpeed() / 1024.0, 0, 'f', 2));
-        }
-
-        if (gpNetworkInfo->getDownloadSpeed() < 1024.0)
-        {
-            ui->lbDownSpeed->setText(QString("%1 KB/s").arg(gpNetworkInfo->getDownloadSpeed(), 0, 'f', 2));
-        }
-        else
-        {
-            ui->lbDownSpeed->setText(QString("%1 MB/s").arg(gpNetworkInfo->getDownloadSpeed() / 1024.0, 0, 'f', 2));
-        }
-
-    }
-    else
-    {
-        // Do nothing
-    }
-    #endif /* End of #ifdef Q_OS_LINUX */
 }
 
 void TimeWindow::onTimerExceedSlow()
@@ -130,3 +41,49 @@ void TimeWindow::onTimerExceedSlow()
     ui->lbCurrentDate->setText(QString("%1, %2").arg(lsDayName).arg(loToday.toString("dd/MM/yyyy")));
 }
 
+void TimeWindow::onTotalCpuUsageDataUpdate(double ldTotalCpuUsage, double ldTotalCpuLoad)
+{
+    // unused parameter
+    (void)ldTotalCpuLoad;
+
+    // Display the CPU usage
+    ui->pbCPU->setValue((int)ldTotalCpuUsage);
+}
+
+void TimeWindow::onRamDataUpdate(double ldRamUsage, double ldRamTotal, double ldRamAvailable, double ldSwapTotal, double ldSwapFree)
+{
+    // Unused parameters
+    (void)ldRamTotal;
+    (void)ldRamAvailable;
+    (void)ldSwapTotal;
+    (void)ldSwapFree;
+
+    // Display the RAM usage
+    ui->pbRAM->setValue((int)ldRamUsage);
+}
+
+void TimeWindow::onNetworkDataUpdate(QString lsMyIP, double ldUploadSpeed, double ldDownloadSpeed)
+{
+    // Unused parameters
+    (void)lsMyIP;
+
+    // Display the network upload speed
+    if (ldUploadSpeed < 1024.0)
+    {
+        ui->lbUpSpeed->setText(QString("%1 KB/s").arg(ldUploadSpeed, 0, 'f', 2));
+    }
+    else
+    {
+        ui->lbUpSpeed->setText(QString("%1 MB/s").arg(ldUploadSpeed / 1024.0, 0, 'f', 2));
+    }
+
+    // Display the network download speed
+    if (ldDownloadSpeed < 1024.0)
+    {
+        ui->lbDownSpeed->setText(QString("%1 KB/s").arg(ldDownloadSpeed, 0, 'f', 2));
+    }
+    else
+    {
+        ui->lbDownSpeed->setText(QString("%1 MB/s").arg(ldDownloadSpeed / 1024.0, 0, 'f', 2));
+    }
+}
