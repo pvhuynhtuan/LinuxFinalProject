@@ -8,10 +8,7 @@
 #include "timewindow.h"
 
 #include "RingMeter.h"
-#include "cpuinfoclass.h"
-#include "raminfoclass.h"
 #include "clickablelabelclass.h"
-#include "networkinfoclass.h"
 #include "appdataprocessing.h"
 
 #include "AppConfig.h"

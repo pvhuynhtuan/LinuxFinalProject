@@ -13,7 +13,6 @@
 // Specific define for CPU display
 #define DATA_FAST_TIMER_INTERVAL_MS         100
 #define DATA_MEDIAN_TIMER_INTERVAL_MS       500
-#define DATA_SLOW_TIMER_INTERVAL_MS         1000
 
 class AppDataProcessing : public QObject
 {
@@ -25,7 +24,6 @@ public slots:
     void startDataProcessing();
     void onTimerExceedFast();
     void onTimerExceedMedian();
-    // void onTimerExceedSlow();
 
 signals:
     void onTotalCpuUsageDataReady(double ldTotalCpuUsage, double ldTotalCpuLoad);

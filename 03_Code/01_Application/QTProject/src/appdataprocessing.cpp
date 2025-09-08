@@ -42,10 +42,6 @@ void AppDataProcessing::startDataProcessing()
     QTimer *lpTimerMedian = new QTimer(this);
     connect(lpTimerMedian, &QTimer::timeout, this, &AppDataProcessing::onTimerExceedMedian);
     lpTimerMedian->start(DATA_MEDIAN_TIMER_INTERVAL_MS);
-
-    // QTimer *lpTimerSlow = new QTimer(this);
-    // connect(lpTimerSlow, &QTimer::timeout, this, &AppDataProcessing::onTimerExceedSlow);
-    // lpTimerSlow->start(DATA_SLOW_TIMER_INTERVAL_MS);
 }
 
 void AppDataProcessing::onTimerExceedFast()
@@ -118,8 +114,6 @@ void AppDataProcessing::onTimerExceedMedian()
     double ldUploadSpeed, ldDownloadSpeed;
 
     lsMyIP = QString("255.255.255.255");
-    ldUploadSpeed = 0.0;
-    ldDownloadSpeed = 0.0;
 
     // Calculate the cpu temperature
     #ifdef Q_OS_LINUX
@@ -149,7 +143,8 @@ void AppDataProcessing::onTimerExceedMedian()
     }
     else
     {
-        // Do nothing
+        ldUploadSpeed = 0.0;
+        ldDownloadSpeed = 0.0;
     }
     #elif defined(Q_OS_WIN)
     lsMyIP = QString("%1.%2.%3.%4").arg(rand() % 100).arg(rand() % 100).arg(rand() % 100).arg(rand() % 100);
@@ -158,8 +153,3 @@ void AppDataProcessing::onTimerExceedMedian()
     #endif /* End of #ifdef Q_OS_LINUX */
     emit onNetworkDataReady(lsMyIP, ldUploadSpeed, ldDownloadSpeed);
 }
-
-// void AppDataProcessing::onTimerExceedSlow()
-// {
-
-// }

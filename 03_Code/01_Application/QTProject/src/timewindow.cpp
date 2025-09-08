@@ -38,7 +38,7 @@ void TimeWindow::onTimerExceedSlow()
     QString lsDayName = loLocale.dayName(liDayOfWeek, QLocale::LongFormat);
 
     ui->lbCurrentTime->setText(QTime::currentTime().toString());
-    ui->lbCurrentDate->setText(QString("%1, %2").arg(lsDayName).arg(loToday.toString("dd/MM/yyyy")));
+    ui->lbCurrentDate->setText(QString("%1, %2").arg(lsDayName, loToday.toString("dd/MM/yyyy")));
 }
 
 void TimeWindow::onTotalCpuUsageDataUpdate(double ldTotalCpuUsage, double ldTotalCpuLoad)

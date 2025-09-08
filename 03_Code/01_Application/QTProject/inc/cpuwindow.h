@@ -9,7 +9,6 @@
 #include <QTime>   // for QTime
 
 #include "appdataprocessing.h"
-#include "cpuinfoclass.h"
 #include "AppConfig.h"
 
 // Specific define for CPU display
