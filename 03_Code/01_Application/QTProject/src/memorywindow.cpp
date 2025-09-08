@@ -4,29 +4,14 @@
 #include <QTime>
 #include <QStorageInfo>
 
-MemoryWindow::MemoryWindow(QWidget *parent)
+MemoryWindow::MemoryWindow(AppDataProcessing* lpProcessor, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MemoryWindow)
 {
     ui->setupUi(this);
 
-
     pRamMeter = findChild<WaveProgressWidget*>("wRamCircle");
     pMemMeter = findChild<WaveProgressWidget*>("wMemCircle");
-
-    gpRamInfo = new RamInfoClass();
-    #ifdef Q_OS_LINUX
-    gpRamInfo->CalculateRamUsage(); // dummy read to start initial data
-    double ldRamUsage = gpRamInfo->CalculateRamUsage();
-    if (ldRamUsage >= 0)
-    {
-        pRamMeter->setValue(ldRamUsage);
-    }
-    else
-    {
-        // Do nothing
-    }
-    #endif
 
     qint64 llBytesTotal, llBytesAvail;
     QStorageInfo root = QStorageInfo::root();
@@ -43,9 +28,7 @@ MemoryWindow::MemoryWindow(QWidget *parent)
     connect(lpTimerSlow, &QTimer::timeout, this, &MemoryWindow::onTimerExceedSlow);
     lpTimerSlow->start(MEM_SLOW_TIMER_INTERVAL_MS);
 
-    QTimer *lpTimerFast = new QTimer(this);
-    connect(lpTimerFast, &QTimer::timeout, this, &MemoryWindow::onTimerExceedFast);
-    lpTimerFast->start(MEM_FAST_TIMER_INTERVAL_MS);
+    connect(lpProcessor, &AppDataProcessing::onRamDataReady, this, &MemoryWindow::onRamDataUpdate);
 }
 
 MemoryWindow::~MemoryWindow()
@@ -74,16 +57,9 @@ void MemoryWindow::onTimerExceedSlow()
     pMemMeter->setValue(((double)(llBytesTotal - llBytesAvail) * 100.0) / (double)llBytesTotal);
 }
 
-void MemoryWindow::onTimerExceedFast()
+void MemoryWindow::onRamDataUpdate(double ldRamUsage, double ldRamTotal, double ldRamAvailable, double ldSwapTotal, double ldSwapFree)
 {
-    double ldRamUsage;
-    #ifdef Q_OS_LINUX
-    double ldRamTotal, ldRamAvailable, ldSwapTotal, ldSwapFree;
-    #endif
-
     // Display the RAM usage
-    #ifdef Q_OS_LINUX
-    ldRamUsage = gpRamInfo->CalculateRamUsage();
     if (ldRamUsage >= 0)
     {
         pRamMeter->setValue(ldRamUsage);
@@ -92,21 +68,11 @@ void MemoryWindow::onTimerExceedFast()
     {
         // Do nothing
     }
-    #elif defined(Q_OS_WIN)
-    ldRamUsage = rand() % 100; // Fake data for now => to test on the window
-    pRamMeter->setValue(ldRamUsage);
-    #endif
 
-    // Display the RAM data  
-    #ifdef Q_OS_LINUX
-    ldRamTotal = (double)gpRamInfo->getRamTotal() / 1024.0;
-    ldRamAvailable = (double)gpRamInfo->getRamAvailable() / 1024.0;
-    ldSwapTotal = (double)gpRamInfo->getSwapTotal() / 1024.0;
-    ldSwapFree = (double)gpRamInfo->getSwapFree() / 1024.0;
+    // Display the RAM data
     ui->lbRamTotal->setText(QString("%1").arg(ldRamTotal, 0, 'f', 0));
     ui->lbRamAvail->setText(QString("%1").arg(ldRamAvailable, 0, 'f', 0));
     ui->lbSwapTotal->setText(QString("%1").arg(ldSwapTotal, 0, 'f', 0));
     ui->lbSwapFree->setText(QString("%1").arg(ldSwapFree, 0, 'f', 0));
-    #endif
 }
 

@@ -68,7 +68,7 @@ void MainWindow::onCPUMeterClicked()
 void MainWindow::onRAMMeterClicked()
 {
     if (!memoryScreen) {
-        memoryScreen = new MemoryWindow(this);  // or nullptr for independent window
+        memoryScreen = new MemoryWindow(gpProcessor, this);  // or nullptr for independent window
     }
     memoryScreen->show();
     memoryScreen->raise();

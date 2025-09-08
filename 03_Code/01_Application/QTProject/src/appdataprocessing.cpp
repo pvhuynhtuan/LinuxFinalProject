@@ -117,6 +117,10 @@ void AppDataProcessing::onTimerExceedMedian()
     QString lsMyIP;
     double ldUploadSpeed, ldDownloadSpeed;
 
+    lsMyIP = QString("255.255.255.255");
+    ldUploadSpeed = 0.0;
+    ldDownloadSpeed = 0.0;
+
     // Calculate the cpu temperature
     #ifdef Q_OS_LINUX
     ldTemper = goTotalCpuInfo.CalculateTemperature();
