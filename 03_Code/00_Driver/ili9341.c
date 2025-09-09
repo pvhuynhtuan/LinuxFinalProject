@@ -85,7 +85,7 @@
 #define GPIO_HIGH               1
 
 /* SPI Speed */
-#define ILI9341_SPI_SPEED       16000000
+#define ILI9341_SPI_SPEED       32000000
 
 /* LCD modes */
 #define ILI9341_MODE_CMD        0
